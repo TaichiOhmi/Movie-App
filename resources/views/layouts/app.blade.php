@@ -26,7 +26,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('movies.index') }}">
                     <i class="fas fa-film"></i>
                     {{ config('app.name', 'Laravel') }}
                     <i class="fas fa-film"></i>
@@ -39,7 +39,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Movies</a>
+                            <a href="{{ route('movies.index') }}" class="nav-link">Movies</a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">TV shows</a>

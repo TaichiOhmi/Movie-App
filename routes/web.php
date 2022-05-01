@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MoviesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,16 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Auth::routes();
+Route::get('/', [MoviesController::class, 'index'])->name('movies.index');
+Route::get('/movies/{movie}', [MoviesController::class, 'show'])->name('movies.show');
 
-Route::group(['middleware'=>'auth'],function(){
-    Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('/show', [HomeController::class, 'show'])->name('show');
-});
+Auth::routes();
+// Route::group(['middleware'=>'auth'],function(){
+//     Route::get('/', 'contents.index');
+//     Route::view('/show', 'contents.show');
+//     Route::get('/', [HomeController::class, 'index'])->name('index');
+
+//     Route::get('/movie/show', [HomeController::class, 'show'])->name('show');
+
+//     Route::get('/TVshow/show', [])
+// });
