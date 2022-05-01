@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-sm px-auto">
+<div class="container w-75">
     <div class="row d-flex justify-content-center">
         <h2 class="text-uppercase text-orange fw-bolder">Popular Movies</h2>
     </div>

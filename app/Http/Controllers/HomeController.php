@@ -25,4 +25,8 @@ class HomeController extends Controller
     {
         return view('contents.index');
     }
+
+    public function show(){
+        return view('contents.show');
+    }
 }
