@@ -7849,6 +7849,11 @@ textarea.form-control-lg {
   color: #ffc107 !important;
 }
 
+.text-pink {
+  --bs-text-opacity: 1;
+  color: #d63384 !important;
+}
+
 .text-body {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;

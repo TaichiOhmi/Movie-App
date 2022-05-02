@@ -53,12 +53,12 @@
             </div>
             @if (count($movie['videos']['results']) == 1)
             <div class="mt-3">
-                <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][0]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark"><i class="fas fa-play-circle"></i> トレーラーを再生</a>
+                <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][0]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラーを再生</a>
             </div>
             @elseif(count($movie['videos']['results']) > 1)
             <div class="row mt-3">
                 @for ($i=0;$i<count($movie['videos']['results']);$i++)
-                <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][$i]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark"><i class="fas fa-play-circle"></i> トレーラー{{ $i+1 }}</a>
+                <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][$i]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラー{{ $i+1 }}</a>
                 @endfor
             </div>
             @endif
