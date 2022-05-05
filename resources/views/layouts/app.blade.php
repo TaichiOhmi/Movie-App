@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name')  }} | @yield('title')</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -21,6 +21,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @livewireStyles
 </head>
 <body class="bg-dark text-white">
     <div id="app">
@@ -51,9 +53,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item me-3">
-                            <input type="text" name="search" id="search" class="form-control-search font-awesome" placeholder="Search"  aria-label="Search">
-                        </li>
+                        <form action="#" method="#" class="d-flex my-auto me-3 nav-form">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn-sm btn-orange" type="submit">Search</button>
+                            </div>
+                        </form>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -69,17 +74,25 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                                <button class="btn shadow-none nav-link" id="account-dropdown" data-bs-toggle="dropdown">
+                                    @if (Auth::user()->avatar)
+                                        <img src="#" alt="#">
+                                    @else
+                                        <i class="fas fa-user-circle nav-icon"></i>
+                                    @endif
+                                </button>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
+                                    {{-- Admin Controls --}}
+
+                                    {{-- Profile --}}
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-user-circle"></i> Profile
                                     </a>
-
+                                    {{-- Logout --}}
+                                    <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                        <i class="fa-solid fa-right-from-bracket"></i> {{ __('Logout') }}
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -95,5 +108,6 @@
             @yield('content')
         </main>
     </div>
+    @livewireScripts
 </body>
 </html>
