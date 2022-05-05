@@ -1,3 +1,10 @@
 .nav-icon {
     font-size:2rem;
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 400px;
+    width: auto;
+    overflow-x: hidden;
+}

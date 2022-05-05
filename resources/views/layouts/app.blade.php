@@ -24,9 +24,9 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @livewireStyles
 </head>
-<body class="bg-dark text-white">
+<body class="bg-dark text-white mt-5">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-lg fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('movies.index') }}">
                     <i class="fas fa-film"></i>
@@ -53,12 +53,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <form action="#" method="#" class="d-flex my-auto me-3 nav-form">
-                            <div class="input-group">
-                                <input class="form-control form-control-sm" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn-sm btn-orange" type="submit">Search</button>
-                            </div>
-                        </form>
+                        @livewire('search-dropdown')
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

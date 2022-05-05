@@ -7,7 +7,7 @@
         <div class="col-12 col-sm-12 col-lg-6 mb-3">
             <img src="{{ 'https://image.tmdb.org/t/p/w500/'.$movie['poster_path'] }}" alt="poster" class="w-100 h-100 px-3">
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-12 col-lg-6 mb-9">
             <h1>{{ $movie['title'] }}</h1>
             {{-- <div class="text-uppercase d-block mt-2">John</div> --}}
             <div class="d-block">
@@ -24,32 +24,44 @@
                     {{ $genre['name'] }} @if (!$loop->last),@endif
                 @endforeach
             </div>
-            @if ($movie['overview'])
-                <h4 class="mt-4">概要</h4>
-                <p class="mt-1">
-                    {{ $movie['overview'] }}
-                    <span class="float-end">
-                        HP: <a href="{{ $movie['homepage'] }}">{{ $movie['homepage'] }}</a>
-                    </span>
-                </p>
-            @else
-                <h4 class="mt-4">詳細：<a href="{{ $movie['homepage'] }}">{{ $movie['homepage'] }}</a></h4>
-                
-            @endif
-            <h4 class="mt-4">主な撮影スタッフ</h4>
-            <div class="row">
-                @foreach($movie['credits']['crew'] as $crew)
-                @if($loop->index < 5)
-                <div class="col">
-                    <div class="mt-2 fw-bold fs-6">
-                        {{ $crew['name'] }}
-                    </div>
-                    <span class="text-muted">
-                        {{ $crew['job'] }}
-                    </span>
-                </div>
+            <div class="d-block">
+                @if ($movie['overview'])
+                    <h4 class="mt-4">概要</h4>
+                    <p class="mt-1">
+                        {{ $movie['overview'] }}
+                        <span class="float-end w-100">
+                            HP: <a href="{{ $movie['homepage'] }}" target="_blank">{{ $movie['homepage'] }}</a>
+                        </span>
+                    </p>
+                @else
+                    <h4 class="mt-4">詳細：
+                        <a href="{{ $movie['homepage'] }}"  target="_blank">
+                            @if(str_word_count($movie['homepage'])>10)
+                            {{-- URLの最後の部分が長い大文字だと自動改行されない --}}
+                            {{ $movie['title'] }}
+                            @else
+                            {{ $movie['homepage'] }}
+                            @endif
+                        </a>
+                    </h4>
                 @endif
-                @endforeach
+            </div>
+            <div class="d-block mt-5">
+                <h4>主な撮影スタッフ</h4>
+                <div class="row">
+                    @foreach($movie['credits']['crew'] as $crew)
+                    @if($loop->index < 5)
+                    <div class="col">
+                        <div class="mt-1 fw-bold fs-6">
+                            {{ $crew['name'] }}
+                        </div>
+                        <span class="text-muted">
+                            {{ $crew['job'] }}
+                        </span>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
             </div>
             @if (count($movie['videos']['results']) == 1)
             <div class="mt-3">
