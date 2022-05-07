@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
+use Livewire\Livewire;
 
 class ViewMoviesTest extends TestCase
 {
@@ -14,7 +15,7 @@ class ViewMoviesTest extends TestCase
         Http::fake([
             'https://api.themoviedb.org/3/movie/popular?language=ja-JP' => $this->fakePopularMovie(),
             'https://api.themoviedb.org/3/movie/now_playing?language=ja-JP' => $this->fakeNowPlayingMovie(),
-            // 'https://api.themoviedb.org/3/genre/movie/list?language=ja-JP' => $this->fakeGenres(),
+            'https://api.themoviedb.org/3/genre/movie/list?language=ja-JP' => $this->fakeGenres(),
         ]);
         $response = $this->get(route('movies.index'));
 
@@ -38,6 +39,45 @@ class ViewMoviesTest extends TestCase
         $response->assertSee('フェイクディレクター');
         $response->assertSee('フェイクスタッフ');
         $response->assertSee('フェイクキャスト');
+    }
+
+    public function the_search_dropdown_works_correctly(){
+        Http::fake([
+            'https://api.themoviedb.org/3/search/movie/?language=ja-JP&query=ラティアス' => $this->fakeSearchMovies(),
+        ]);
+
+        Livewire::test('search-dropdown')
+            ->assertDontSee('ラティアス')
+            ->set('search', 'ラティアス')
+            ->assertSee('劇場版ポケットモンスター 水の都の護神 ラティアスとラティオス');
+    }
+
+    public function fakeSearchMovies(){
+        return Http::response([
+            'results' => [
+                [
+                "adult" => false,
+                "backdrop_path" => "/6nfEmbfWMuMBenYMOY6Vdho3Ycg.jpg",
+                "genre_ids" => [
+                    16,
+                    28,
+                    12,
+                    14
+                ],
+                "id" => 33875,
+                "original_language" => "ja",
+                "original_title" => "劇場版ポケットモンスター 水の都の護神 ラティアスとラティオス",
+                "overview" => "世界で一番美しい町といわれる水の都「アルトマーレ」。そこでサトシは不思議な技を持つポケモン、ラティアスとラティオスに出会う。ラティオスは兄、ラティアスは妹でとても仲がよく、この町の秘宝「こころのしずく」を守っていた。この秘宝をねらう怪盗姉妹ザンナーとリオン。彼女たちが起こした事件に巻き込まれるサトシとピカチュウたち。隠された封印が解かれた時、町は大水害に見舞われる。奪われた「こころのしずく」を取り返す為、サトシとピカチュウが水の都を駆け抜ける！",
+                "popularity" => 23.112,
+                "poster_path" => "/vi9X72b5o3SUQ7fKh4N2eEUmeau.jpg",
+                "release_date" => "2021-09-30",
+                "title" => "劇場版ポケットモンスター 水の都の護神 ラティアスとラティオス",
+                "video" => false,
+                "vote_average" => 6.5,
+                "vote_count" => 262,
+                ]
+            ]
+        ], 200);
     }
 
     private function fakePopularMovie(){

@@ -2,12 +2,17 @@
 
 @section('content')
 <div class="container">
+    {{-- @dump($movie) --}}
     {{-- movie info --}}
-    <div class="row mt-3">
-        <div class="col-12 col-sm-12 col-lg-6 mb-3">
-            <img src="{{ 'https://image.tmdb.org/t/p/w500/'.$movie['poster_path'] }}" alt="poster" class="w-100 h-100 px-3">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-6">
+            @if (isset($movie['poster_path']))
+                <img src="{{ 'https://image.tmdb.org/t/p/w500/'.$movie['poster_path'] }}" alt="poster" class="w-100 h-100 px-3">
+            @else
+                <img src="{{ asset('images/searchImagePlaceholder.png') }}" alt="poster" class="w-100 h-100 px-3">
+            @endif
         </div>
-        <div class="col-12 col-sm-12 col-lg-6 mb-9">
+        <div class="col-12 col-sm-12 col-lg-6">
             <h1>{{ $movie['title'] }}</h1>
             {{-- <div class="text-uppercase d-block mt-2">John</div> --}}
             <div class="d-block">
