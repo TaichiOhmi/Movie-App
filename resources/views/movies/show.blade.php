@@ -80,7 +80,8 @@
         </div>
     </div>
 
-    {{-- modal --}}
+    {{-- modal  --}}
+    {{-- モーダルを閉じてもyoutubeの再生が続いてしまうのがまだ修正できていない。alpineで直そうとしたけど上手くいかなかった --}}
     @if (count($movie['videos']['results']) > 0)
     @for ($i=0;$i<count($movie['videos']['results']);$i++)
     <div class="modal fade bg-dark" id="movie{{$i}}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
