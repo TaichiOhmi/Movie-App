@@ -6,8 +6,8 @@
         <h1 class="text-uppercase text-orange fw-bolder mt-3">Popular Movies</h1>
     </div>
     <div class="row row-cols-lg-5 d-flex justify-content-center">
-        @foreach($popularMovies as $popularmovie)
-            <x-movie-card :movie="$popularmovie" :genres="$genres"/>
+        @foreach($popularMovies as $popularMovie)
+            <x-movie-card :movie="$popularMovie"/>
         @endforeach
     </div>
 
@@ -16,7 +16,7 @@
     </div>
     <div class="row row-cols-lg-5 d-flex justify-content-center">
         @foreach($nowPlayingMovies as $nowPlayingMovie)
-            <x-movie-card :movie="$nowPlayingMovie" :genres="$genres"/>
+            <x-movie-card :movie="$nowPlayingMovie"/>
         @endforeach
     </div>
 

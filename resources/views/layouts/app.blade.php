@@ -12,6 +12,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    {{-- AlpineJS --}}
+    <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -33,6 +36,9 @@
                     {{ config('app.name', 'Laravel') }}
                     <i class="fas fa-film"></i>
                 </a>
+
+
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,28 +57,30 @@
                         </li>
                     </ul>
 
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @livewire('search-dropdown')
                         <!-- Authentication Links -->
                         @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                            <button class="btn shadow-none nav-link" id="account-dropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle nav-icon"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
+                                {{-- Login --}}
+                                <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                                {{-- Register --}}
+                                <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </div>
                         @else
                             <li class="nav-item dropdown">
                                 <button class="btn shadow-none nav-link" id="account-dropdown" data-bs-toggle="dropdown">
                                     @if (Auth::user()->avatar)
+                                        {{-- {{Auth::user()->name}} --}}
                                         <img src="#" alt="#">
                                     @else
+                                        {{-- {{Auth::user()->name}} --}}
                                         <i class="fas fa-user-circle nav-icon"></i>
                                     @endif
                                 </button>
