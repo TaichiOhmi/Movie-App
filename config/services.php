@@ -36,4 +36,8 @@ return [
         'language' => 'ja-JP'
     ],
 
+    'deepl' => [
+        'auth_key' => env('DEEPL_TOKEN'),
+    ],
+
 ];
