@@ -8,10 +8,12 @@ use Spatie\ViewModels\ViewModel;
 class MovieViewModel extends ViewModel
 {
     public $movie;
+    public $images;
 
-    public function __construct($movie)
+    public function __construct($movie, $images)
     {
         $this->movie = $movie;
+        $this->images = $images;
     }
 
     public function movie()
@@ -23,8 +25,9 @@ class MovieViewModel extends ViewModel
             'genres' => collect($this->movie['genres'])->pluck('name')->flatten()->implode(', '),
             'crew' => collect($this->movie['credits']['crew'])->take(5),
             'cast' => collect($this->movie['credits']['cast'])->take(12),
+            'images' => collect($this->images['images']['backdrops']),
         ])->only([
-            'poster_path', 'id', 'credits', 'title', 'vote_average', 'overview', 'release_date', 'genres', 'videos', 'backdrop_path', 'crew', 'cast', 'belongs_to_collection', 'homepage'
+            'poster_path', 'id', 'credits', 'title', 'vote_average', 'overview', 'release_date', 'genres', 'videos', 'backdrop_path', 'crew', 'cast', 'homepage', 'images',
         ]);
     }
 }

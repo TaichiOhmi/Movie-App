@@ -31,7 +31,7 @@
                     <h4 class="mt-4">概要</h4>
                     <p class="mt-1">
                         {{ $movie['overview'] }}
-                        <span class="float-end w-100">
+                        <span class="d-inline-block text-end w-100">
                             HP: <a href="{{ $movie['homepage'] }}" target="_blank">{{ $movie['homepage'] }}</a>
                         </span>
                     </p>
@@ -48,7 +48,7 @@
                     </h4>
                 @endif
             </div>
-            <div class="d-block mt-5">
+            <div class="d-block">
                 <h4>主な撮影スタッフ</h4>
                 <div class="row">
                     @foreach($movie['crew'] as $crew)
@@ -65,19 +65,19 @@
             </div>
             {{-- @dump($movie['videos']['results']) --}}
             @if (count($movie['videos']['results']) == 1)
-            <div class="my-3">
+            <div class="my-5">
                 {{-- <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][0]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラーを再生</a> --}}
                 <button class="btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#movie0"><i class="fas fa-play-circle"></i> トレーラーを再生</button>
             </div>
             @elseif(count($movie['videos']['results']) > 1)
-            <div class="row">
+            <div class="row d-block mt-3">
                 @for ($i=0;$i<count($movie['videos']['results']);$i++)
                 {{-- <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][$i]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラー{{ $i+1 }}</a> --}}
                 <button class="col-5 mx-2 mt-1 btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#movie{{$i}}"><i class="fas fa-play-circle"></i> トレーラー{{$i+1}}を再生</button>
                 @endfor
             </div>
             @endif
-        </div>
+    </div>
     </div>
 
     {{-- modal  --}}
@@ -133,21 +133,35 @@
     <div class="row border-top border-secondary">
         <h2 class="mt-3">メディア</h2>
         {{-- @dump($movie) --}}
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-            @if ($movie['belongs_to_collection'] != null)
-                <div class="carousel-item active">
-                    <img src="{{ 'https://image.tmdb.org/t/p/original/'.$movie['belongs_to_collection']['backdrop_path'] }}" class="d-block w-100" alt="backdrop">
+        <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
+            @if ($movie['images'] != null)
+                <div class="carousel-indicators">
+                    @foreach ($movie['images'] as $image)
+                    @if ($loop->index == 0)
+                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="{{ $loop->index }}" class="active" aria-current="true" aria-label="Slide {{ $loop->index }}"></button>
+                    @else
+                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="{{ $loop->index }}" aria-label="Slide {{ $loop->index }}"></button>
+                    @endif
+                    @endforeach
                 </div>
-                <div class="carousel-item">
-                    <img src="{{ 'https://image.tmdb.org/t/p/original/'.$movie['backdrop_path'] }}" class="d-block w-100" alt="backdrop">
-                </div>
+                <div class="carousel-inner">
+                @foreach ($movie['images'] as $image)
+                    @if ($loop->index == 0)
+                        <div class="carousel-item active">
+                            <img src="{{ 'https://image.tmdb.org/t/p/original/'.$image['file_path'] }}" class="d-block mx-auto w-75" alt="backdrop">
+                        </div>
+                    @else
+                        <div class="carousel-item">
+                            <img src="{{ 'https://image.tmdb.org/t/p/original/'.$image['file_path'] }}" class="d-block mx-auto w-75" alt="backdrop">
+                        </div>
+                    @endif
+                @endforeach
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
             </button>
