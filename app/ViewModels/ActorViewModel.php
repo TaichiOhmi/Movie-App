@@ -1,0 +1,126 @@
+<?php
+
+namespace App\ViewModels;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Spatie\ViewModels\ViewModel;
+
+class ActorViewModel extends ViewModel
+{
+    public $actor;
+    public $social;
+    public $credits;
+
+    public function __construct($actor, $social, $credits)
+    {
+        $this->actor = $actor;
+        $this->social = $social;
+        $this->credits = $credits;
+    }
+
+    public function actor()
+    {
+        // もし、今回選んだ俳優のIDがデータベースに登録されていればデータベースの翻訳文を取得し、なければ新たに翻訳する。
+        //firstOrCreate()調べる
+
+        // $responseName = Http::get(
+        //     'https://api-free.deepl.com/v2/translate',
+        //     // GETパラメータ
+        //     [
+        //         'auth_key' => config('services.deepl.auth_key'),
+        //         'source_lang' => 'en',
+        //         'target_lang' => 'ja',
+        //         'text' => $this->actor['name'],
+        //     ]
+        // )->json('translations')[0]['text'];
+
+        // $responsePlaceOfBirth = Http::get(
+        //     'https://api-free.deepl.com/v2/translate',
+        //     // GETパラメータ
+        //     [
+        //         'auth_key' => config('services.deepl.auth_key'),
+        //         'source_lang' => 'en',
+        //         'target_lang' => 'ja',
+        //         'text' => $this->actor['place_of_birth'],
+        //     ]
+        // )->json('translations')[0]['text'];
+
+        // $responseBio = Http::get(
+        //     'https://api-free.deepl.com/v2/translate',
+        //     // GETパラメータ
+        //     [
+        //         'auth_key' => config('services.deepl.auth_key'),
+        //         'source_lang' => 'en',
+        //         'target_lang' => 'ja',
+        //         'text' => $this->actor['biography'],
+        //     ]
+        // )->json('translations')[0]['text'];
+
+
+
+
+        return collect($this->actor)->merge([
+            'birthday' => Carbon::parse($this->actor['birthday'])->format('Y年m月d日'),
+            'age' => Carbon::parse($this->actor['birthday'])->age,
+            'profile_path' => $this->actor['profile_path']
+                ? 'https://image.tmdb.org/t/p/original/'.$this->actor['profile_path']
+                : 'https://via.placeholder.com/300x450',
+        ]);
+    }
+
+    public function social()
+    {
+        return collect($this->social)->merge([
+            'twitter' => $this->social['twitter_id'] ? 'https://twitter.com/'.$this->social['twitter_id'] : null,
+            'facebook' => $this->social['facebook_id'] ? 'https://facebook.com/'.$this->social['facebook_id'] : null,
+            'instagram' => $this->social['instagram_id'] ? 'https://instagram.com/'.$this->social['instagram_id'] : null,
+        ]);
+    }
+
+    public function knownForTitles()
+    {
+        $castTitles = collect($this->credits)->get('cast');
+
+        return collect($castTitles)->sortByDesc('popularity')->take(5)
+            ->map(function($movie) {
+                return collect($movie)->merge([
+                    'poster_path' => $movie['poster_path']
+                    ? 'https://image.tmdb.org/t/p/w185'.$movie['poster_path']
+                    : 'https://via.placeholder.com/185x278',
+                    'title' => isset($movie['title']) ? $movie['title'] : 'untitled',
+                ]);
+            });
+    }
+
+    public function credits()
+    {
+        $castTitles = collect($this->credits)->get('cast');
+
+        return collect($castTitles)->map(function($movie) {
+
+            if (isset($movie['release_date'])){
+                $releaseDate = $movie['release_date'];
+            }else if (isset($movie['first_air_date'])){
+                $releaseDate = $movie['first_air_date'];
+            }else{
+                $releaseDate = '';
+            }
+
+            if (isset($movie['title'])){
+                $title = $movie['title'];
+            }else if (isset($movie['name'])){
+                $title = $movie['name'];
+            }else{
+                $title = 'Untitled';
+            }
+
+            return collect($movie)->merge([
+                'release_date' => $releaseDate,
+                'release_year' => isset($releaseDate) ? Carbon::parse($releaseDate)->format('Y') : 'Future',
+                'title' => $title,
+                'character' => isset($movie['character']) ? $movie['character'] : '',
+            ]);
+            })->sortByDesc('release_date');
+    }
+}

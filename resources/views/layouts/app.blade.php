@@ -17,7 +17,7 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -53,7 +53,7 @@
                             <a href="#" class="nav-link">TV shows</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Actors</a>
+                            <a href="{{ route('actors.index') }}" class="nav-link">Actors</a>
                         </li>
                     </ul>
 
@@ -112,5 +112,6 @@
         </main>
     </div>
     @livewireScripts
+    @yield('scripts')
 </body>
 </html>
