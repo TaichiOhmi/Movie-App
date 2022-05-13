@@ -82,44 +82,54 @@ class ActorViewModel extends ViewModel
     {
         $castTitles = collect($this->credits)->get('cast');
 
-        return collect($castTitles)->sortByDesc('popularity')->take(5)
-            ->map(function($movie) {
-                return collect($movie)->merge([
-                    'poster_path' => $movie['poster_path']
-                    ? 'https://image.tmdb.org/t/p/w185'.$movie['poster_path']
-                    : 'https://via.placeholder.com/185x278',
-                    'title' => isset($movie['title']) ? $movie['title'] : 'untitled',
-                ]);
-            });
+        return collect($castTitles)->sortByDesc('popularity')->take(5)->map(function($title) {
+            if (isset($title['title'])){
+                $Title = $title['title'];
+            }else if (isset($title['name'])){
+                $Title = $title['name'];
+            }else{
+                $Title = 'Untitled';
+            }
+
+            return collect($title)->merge([
+                'poster_path' => $title['poster_path']
+                ? 'https://image.tmdb.org/t/p/w185'.$title['poster_path']
+                : 'https://via.placeholder.com/185x278',
+                'title' => $Title,
+                'linkToPage' => $title['media_type'] == 'movie' ? route('movies.show', $title['id']) : route('tv.show', $title['id']),
+            ])->only([
+                'poster_path', 'title', 'id', 'media_type','linkToPage',
+            ]);
+        });
     }
 
     public function credits()
     {
         $castTitles = collect($this->credits)->get('cast');
 
-        return collect($castTitles)->map(function($movie) {
+        return collect($castTitles)->map(function($title) {
 
-            if (isset($movie['release_date'])){
-                $releaseDate = $movie['release_date'];
-            }else if (isset($movie['first_air_date'])){
-                $releaseDate = $movie['first_air_date'];
+            if (isset($title['release_date'])){
+                $releaseDate = $title['release_date'];
+            }else if (isset($title['first_air_date'])){
+                $releaseDate = $title['first_air_date'];
             }else{
                 $releaseDate = '';
             }
 
-            if (isset($movie['title'])){
-                $title = $movie['title'];
-            }else if (isset($movie['name'])){
-                $title = $movie['name'];
+            if (isset($title['title'])){
+                $Title = $title['title'];
+            }else if (isset($title['name'])){
+                $Title = $title['name'];
             }else{
-                $title = 'Untitled';
+                $Title = 'Untitled';
             }
 
-            return collect($movie)->merge([
+            return collect($title)->merge([
                 'release_date' => $releaseDate,
                 'release_year' => isset($releaseDate) ? Carbon::parse($releaseDate)->format('Y') : 'Future',
-                'title' => $title,
-                'character' => isset($movie['character']) ? $movie['character'] : '',
+                'title' => $Title,
+                'character' => isset($title['character']) ? $title['character'] : '',
             ]);
             })->sortByDesc('release_date');
     }

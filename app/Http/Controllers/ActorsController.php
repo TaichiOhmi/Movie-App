@@ -65,7 +65,7 @@ class ActorsController extends Controller
         ->json();
 
         $credits = Http::withToken(config('services.tmdb.token'))
-        ->get('https://api.themoviedb.org/3/person/'.$id.'/credits?language=ja-JP&region=JP')
+        ->get('https://api.themoviedb.org/3/person/'.$id.'/combined_credits?language=ja-JP&region=JP')
         ->json();
 
         $viewModel = new ActorViewModel($actor, $social, $credits);

@@ -2,47 +2,47 @@
 
 @section('content')
 <div class="container">
-    {{-- @dump($movie) --}}
-    {{-- movie info --}}
+    {{-- @dump($tvshow) --}}
+    {{-- tvshow info --}}
     <div class="row">
         <div class="col-12 col-sm-12 col-lg-6 mt-3">
-            @if (isset($movie['poster_path']))
-                <img src="{{ $movie['poster_path'] }}" alt="poster" class="w-100 h-100 px-3">
+            @if (isset($tvshow['poster_path']))
+                <img src="{{ $tvshow['poster_path'] }}" alt="poster" class="w-100 h-100 px-3">
             @else
                 <img src="{{ asset('images/searchImagePlaceholder.png') }}" alt="poster" class="w-100 h-100 px-3">
             @endif
         </div>
         <div class="col-12 col-sm-12 col-lg-6 mt-3">
-            <h1>{{ $movie['title'] }}</h1>
+            <h1>{{ $tvshow['name'] }}</h1>
             {{-- <div class="text-uppercase d-block mt-2">John</div> --}}
             <div class="d-block">
                 <i class="fas fa-star text-yellow"></i>レーティング
-                <span class="ms-2">{{ $movie['vote_average'] }}</span>
+                <span class="ms-2">{{ $tvshow['vote_average'] }}</span>
             </div>
             <div class="d-block">
                 公開日：
-                {{ $movie['release_date'] }}
+                {{ $tvshow['first_air_date'] }}
             </div>
             <div class="d-block">
-                ジャンル：{{ $movie['genres'] }}
+                ジャンル：{{ $tvshow['genres'] }}
             </div>
             <div class="d-block">
-                @if ($movie['overview'])
+                @if ($tvshow['overview'])
                     <h4 class="mt-4">概要</h4>
                     <p class="mt-1">
-                        {{ $movie['overview'] }}
+                        {{ $tvshow['overview'] }}
                         <span class="d-inline-block text-end w-100">
-                            HP: <a href="{{ $movie['homepage'] }}" target="_blank">{{ $movie['homepage'] }}</a>
+                            HP: <a href="{{ $tvshow['homepage'] }}" target="_blank">{{ $tvshow['homepage'] }}</a>
                         </span>
                     </p>
                 @else
                     <h4 class="mt-4">詳細：
-                        <a href="{{ $movie['homepage'] }}"  target="_blank">
-                            @if(str_word_count($movie['homepage'])>10)
+                        <a href="{{ $tvshow['homepage'] }}"  target="_blank">
+                            @if(str_word_count($tvshow['homepage'])>10)
                             {{-- URLの最後の部分が長い大文字だと自動改行されない --}}
-                            {{ $movie['title'] }}
+                            {{ $tvshow['name'] }}
                             @else
-                            {{ $movie['homepage'] }}
+                            {{ $tvshow['homepage'] }}
                             @endif
                         </a>
                     </h4>
@@ -51,29 +51,41 @@
             <div class="d-block">
                 <h4>主な撮影スタッフ</h4>
                 <div class="row">
-                    @foreach($movie['crew'] as $crew)
+                    @foreach($tvshow['created_by'] as $crew)
                     <div class="col">
                         <div class="mt-1 fw-bold fs-6">
                             {{ $crew['name'] }}
                         </div>
-                        <span class="text-muted">
-                            {{ $crew['job'] }}
-                        </span>
                     </div>
                     @endforeach
                 </div>
             </div>
-            {{-- @dump($movie['videos']['results']) --}}
-            @if (count($movie['videos']['results']) == 1)
-            <div class="my-5">
-                {{-- <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][0]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラーを再生</a> --}}
-                <button class="btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#movie0"><i class="fas fa-play-circle"></i> トレーラーを再生</button>
+            <div class="d-block">
+                <h4 class="mt-4">シーズン</h4>
+                <div class="row">
+                    @foreach($tvshow['seasons'] as $season)
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                        <div class="mt-1 fw-bold fs-6">
+                            <a href="{{ route('tv.season', ['id'=>$tvshow['id'], 'sid'=>$season['season_number']]) }}" class="text-decoration-none">
+                                <img class="card-img-top" src="{{ 'https://image.tmdb.org/t/p/w185/'.$season['poster_path'] }}" alt="poster" class="img-fluid">
+                                <span class="text-white">{{ $season['name'] }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
-            @elseif(count($movie['videos']['results']) > 1)
+            {{-- @dump($tvshow['videos']) --}}
+            @if (count($tvshow['videos']) == 1)
+            <div class="my-5">
+                {{-- <a href="https://youtube.com/watch?v={{ $tvshow['videos'][0]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラーを再生</a> --}}
+                <button class="btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#tvshow0"><i class="fas fa-play-circle"></i> トレーラーを再生</button>
+            </div>
+            @elseif(count($tvshow['videos']) > 1)
             <div class="row d-block mt-3">
-                @for ($i=0;$i<count($movie['videos']['results']);$i++)
-                {{-- <a href="https://youtube.com/watch?v={{ $movie['videos']['results'][$i]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラー{{ $i+1 }}</a> --}}
-                <button class="col-5 mx-2 mt-1 btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#movie{{$i}}"><i class="fas fa-play-circle"></i> トレーラー{{$i+1}}を再生</button>
+                @for ($i=0;$i<count($tvshow['videos']);$i++)
+                {{-- <a href="https://youtube.com/watch?v={{ $tvshow['videos'][$i]['key'] }}" class="col mx-1 mt-1 btn-orange rounded text-dark" target="_blank"><i class="fas fa-play-circle"></i> トレーラー{{ $i+1 }}</a> --}}
+                <button class="col-5 mx-2 mt-1 btn-orange text-dark" data-bs-toggle="modal" data-bs-target="#tvshow{{$i}}"><i class="fas fa-play-circle"></i> トレーラー{{$i+1}}を再生</button>
                 @endfor
             </div>
             @endif
@@ -82,20 +94,20 @@
 
     {{-- modal  --}}
     {{-- モーダルを閉じてもyoutubeの再生が続いてしまうのがまだ修正できていない。alpineで直そうとしたけど上手くいかなかった --}}
-    @if (count($movie['videos']['results']) > 0)
-    @for ($i=0;$i<count($movie['videos']['results']);$i++)
-    <div class="modal fade bg-dark" id="movie{{$i}}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    @if (count($tvshow['videos']) > 0)
+    @for ($i=0;$i<count($tvshow['videos']);$i++)
+    <div class="modal fade bg-dark" id="tvshow{{$i}}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-dark" id="ModalLabel">
-                        {{ $movie['videos']['results'][$i]['name'] }}
+                        {{ $tvshow['videos'][$i]['name'] }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="ratio ratio-16x9">
-                        <iframe src="https://youtube.com/embed/{{ $movie['videos']['results'][$i]['key'] }}" frameborder="0" width="560" height="315" class="position-absolute top-0 left-0 w-100 h-100" allow="autoplay; encrypted-media" allowfullscreen>
+                        <iframe src="https://youtube.com/embed/{{ $tvshow['videos'][$i]['key'] }}" frameborder="0" width="560" height="315" class="position-absolute top-0 left-0 w-100 h-100" allow="autoplay; encrypted-media" allowfullscreen>
                         </iframe>
                     </div>
                 </div>
@@ -106,12 +118,12 @@
     @endif
     {{-- modal --}}
 
-    {{-- movie info --}}
+    {{-- tvshow info --}}
 
     {{-- cast info --}}
     <div class="row my-5 border-top border-secondary">
         <h2 class="mt-3">主なキャスト</h2>
-        @foreach($movie['cast'] as $cast)
+        @foreach($tvshow['cast'] as $cast)
         <div class="col-3 col-lg-2 mt-2">
             <a href="{{ route('actors.show', $cast['id']) }}" class="d-block">
                 @if ($cast['profile_path'] == null)
@@ -132,11 +144,11 @@
     {{-- image list --}}
     <div class="row border-top border-secondary">
         <h2 class="mt-3">メディア</h2>
-        {{-- @dump($movie) --}}
+        {{-- @dump($tvshow) --}}
         <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
-            @if ($movie['images'] != null)
+            @if ($tvshow['images'] != null)
                 <div class="carousel-indicators">
-                    @foreach ($movie['images'] as $image)
+                    @foreach ($tvshow['images'] as $image)
                     @if ($loop->index == 0)
                         <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="{{ $loop->index }}" class="active" aria-current="true" aria-label="Slide {{ $loop->index }}"></button>
                     @else
@@ -145,7 +157,7 @@
                     @endforeach
                 </div>
                 <div class="carousel-inner">
-                @foreach ($movie['images'] as $image)
+                @foreach ($tvshow['images'] as $image)
                     @if ($loop->index == 0)
                         <div class="carousel-item active">
                             <img src="{{ 'https://image.tmdb.org/t/p/original/'.$image['file_path'] }}" class="d-block mx-auto w-75" alt="backdrop">
@@ -166,7 +178,7 @@
             <span class="visually-hidden">Next</span>
             </button>
             @else
-                <img src="{{ 'https://image.tmdb.org/t/p/original/'.$movie['backdrop_path'] }}" class="d-block w-100" alt="backdrop">
+                <img src="{{ 'https://image.tmdb.org/t/p/original/'.$tvshow['backdrop_path'] }}" class="d-block w-100" alt="backdrop">
             @endif
         </div>
     </div>

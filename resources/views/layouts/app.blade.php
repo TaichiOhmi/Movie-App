@@ -50,7 +50,7 @@
                             <a href="{{ route('movies.index') }}" class="nav-link">Movies</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">TV shows</a>
+                            <a href="{{ route('tv.index') }}" class="nav-link">TV shows</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('actors.index') }}" class="nav-link">Actors</a>

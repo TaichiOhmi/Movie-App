@@ -54,7 +54,7 @@
                 <div class="row row-cols-5 flex-nowrap">
                     @foreach( $knownForTitles as $title)
                     <div class="col">
-                        <a href="{{ route('movies.show', $title['id']) }}" class="text-decoration-none text-white">
+                        <a href="{{ $title['linkToPage'] }}" class="text-decoration-none text-white">
                             <img class="card-img-top" src="{{ $title['poster_path'] }}" alt="poster" class="img-fluid">
                             {{ $title['title'] }}
                         </a>

@@ -22,9 +22,9 @@ class ActorsViewModel extends ViewModel
                 ? 'https://image.tmdb.org/t/p/w235_and_h235_face/'.$actor['profile_path']
                 : 'https://ui-avatars.com/api/?size=235&name='.$actor['name'],
 
-                'known_for' => collect($actor['known_for'])->where('media_type', 'movie')->pluck('title')->union(
-                    collect($actor['known_for'])->where('media_type', 'tv')->pluck('name')
-                )->implode(', '),
+                'known_for' => collect($actor['known_for'])->where('media_type', 'tv')->pluck('name')->union(
+                    collect($actor['known_for'])->where('media_type', 'movie')->pluck('title')
+                )->sortByDesc('popularity')->implode(', '),
             ])->only([
                 'profile_path', 'id', 'name', 'known_for'
             ]);
