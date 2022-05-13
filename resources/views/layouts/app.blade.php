@@ -61,47 +61,6 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @livewire('search-dropdown')
-                        <!-- Authentication Links -->
-                        @guest
-                            <button class="btn shadow-none nav-link" id="account-dropdown" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle nav-icon"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
-                                {{-- Login --}}
-                                <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
-
-                                {{-- Register --}}
-                                <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </div>
-                        @else
-                            <li class="nav-item dropdown">
-                                <button class="btn shadow-none nav-link" id="account-dropdown" data-bs-toggle="dropdown">
-                                    @if (Auth::user()->avatar)
-                                        {{-- {{Auth::user()->name}} --}}
-                                        <img src="#" alt="#">
-                                    @else
-                                        {{-- {{Auth::user()->name}} --}}
-                                        <i class="fas fa-user-circle nav-icon"></i>
-                                    @endif
-                                </button>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
-                                    {{-- Admin Controls --}}
-
-                                    {{-- Profile --}}
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-user-circle"></i> Profile
-                                    </a>
-                                    {{-- Logout --}}
-                                    <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        <i class="fa-solid fa-right-from-bracket"></i> {{ __('Logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
                     </ul>
                 </div>
             </div>
