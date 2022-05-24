@@ -28,7 +28,7 @@ Route::get('/actors', [ActorsController::class, 'index'])->name('actors.index');
 Route::get('/actors/page/{page?}', [ActorsController::class, 'index']);
 Route::get('/actors/{id}', [ActorsController::class, 'show'])->name('actors.show');
 
-Auth::routes();
+// Auth::routes();
 // Route::group(['middleware'=>'auth'],function(){
 //     Route::get('/', 'contents.index');
 //     Route::view('/show', 'contents.show');
