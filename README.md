@@ -1,2 +1,2 @@
-themoviedbのapiやdeeplのAPIを用いたアプリケーション
+themoviedbのapiやdeeplのAPIを用いたアプリケーション  
 apiを扱う練習
